@@ -1,10 +1,10 @@
 <template>
 <div class="weather-container">
   <div class="weather-card">
-    <h2>Погода</h2>
+    <h2>Погода в {{ weatherData?.name }}</h2>
     <div class="weather-info">
       <div class="weather-icon">
-        <!-- Иконка погоды -->
+        <img :src="iconPath" alt="WeatherIcon">
       </div>
       <div class="weather-data">
         <p class="weather-temperature">--°C</p>
@@ -12,67 +12,55 @@
         <p class="weather-location">--</p>
       </div>
     </div>
-  </div>
-  <div class="weather-card">
-    <h2>Погода</h2>
-    <div class="weather-info">
-      <div class="weather-icon">
-        <!-- Иконка погоды -->
-      </div>
-      <div class="weather-data">
-        <p class="weather-temperature">--°C</p>
-        <p class="weather-description">--</p>
-        <p class="weather-location">--</p>
-      </div>
-    </div>
-  </div>
-  <div class="weather-card">
-    <h2>Погода</h2>
-    <div class="weather-info">
-      <div class="weather-icon">
-        <!-- Иконка погоды -->
-      </div>
-      <div class="weather-data">
-        <p class="weather-temperature">--°C</p>
-        <p class="weather-description">--</p>
-        <p class="weather-location">--</p>
-      </div>
-    </div>
-  </div>
-  <div class="weather-card">
-    <h2>Погода</h2>
-    <div class="weather-info">
-      <div class="weather-icon">
-        <!-- Иконка погоды -->
-      </div>
-      <div class="weather-data">
-        <p class="weather-temperature">--°C</p>
-        <p class="weather-description">--</p>
-        <p class="weather-location">--</p>
-      </div>
-    </div>
-  </div>
-  <div class="weather-card">
-    <h2>Погода</h2>
-    <div class="weather-info">
-      <div class="weather-icon">
-        <!-- Иконка погоды -->
-      </div>
-      <div class="weather-data">
-        <p class="weather-temperature">--°C</p>
-        <p class="weather-description">--</p>
-        <p class="weather-location">--</p>
-      </div>
-    </div>
+    <button @click="deleteItem(cardId)">Delete</button>
   </div>
 </div>
 </template>
 
 <script>
+
 export default {
   name: 'WeatherInfo',
   props: {
-    msg: String,
+    weatherData: {
+      type: Object,
+      default: () => {},
+    },
+    cardId: {
+      type: Number,
+      default: 0,
+    },
+  },
+  components: {
+  },
+  watch: {
+    weatherData: {
+      immediate: false,
+      handler(newVal, oldVal) {
+        console.log(oldVal, 'oldval');
+        if (newVal) {
+          this.iconPath = `https://openweathermap.org/img/wn/${this.weatherData.weather[0].icon}@2x.png`;
+          console.log(this.iconPath);
+        }
+      },
+    },
+  },
+  mounted() {
+    console.log(this.weatherData);
+  },
+  computed: {
+  },
+  data() {
+    return {
+      isSearched: false,
+      cityInfo: null,
+      iconPath: '../assets/img/missing.png',
+    };
+  },
+  methods: {
+    deleteItem(id) {
+      this.$emit('deleteItem', id);
+    },
   },
 };
 </script>
@@ -82,7 +70,9 @@ export default {
   &-container{
     display: flex;
     flex-wrap:wrap;
-    justify-content: space-between;
+    justify-content: center;
+    flex-direction:column;
+    gap:10px;
   }
   &-card {
   background-color: #fff;
@@ -90,7 +80,7 @@ export default {
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
-  text-align: center;
+  text-align: left;
   h2 {
     margin-top: 0;
   }
@@ -106,7 +96,7 @@ export default {
   width: 100px;
   height: 100px;
   margin-right: 20px;
-  background-color: #f0f0f0;
+  background-color: rgb(125, 243, 208);
   border-radius: 50%;
   display: flex;
   align-items: center;

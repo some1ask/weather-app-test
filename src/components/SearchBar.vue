@@ -30,8 +30,13 @@ export default {
       isOpen: false,
     };
   },
+  props: {
+    cityId: {
+      type: Number,
+      default: 0,
+    },
+  },
   created() {
-    console.log(API_KEY);
   },
   methods: {
     debounceSearch: _.debounce(function (e) {
@@ -53,8 +58,7 @@ export default {
     }, 500),
     selectCity(value) {
       this.isOpen = false;
-      console.log(value);
-      this.$emit('onClickedCity', [value.lat, value.lon]);
+      this.$emit('onClickedCity', [value.lat, value.lon, this.cityId]);
     },
   },
 };

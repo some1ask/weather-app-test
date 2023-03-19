@@ -1,6 +1,6 @@
 <template>
     <div id="header">
-        <img src="../assets/logo.png" alt="">
+        <img src="../assets/img/logo.png" alt="Logo" class="logo">
         <div id="nav">
             <router-link to="/">Home</router-link> |
             <router-link to="/favorites">Favorites</router-link>
@@ -10,10 +10,14 @@
 
 <script>
 export default {
-
+  name: 'Header',
+  components: {
+  },
 };
 </script>
 
-<style>
-
+<style scoped>
+.logo{
+  width: 100px;
+}
 </style>
