@@ -2,8 +2,8 @@
 <template>
   <div id="searchBar" class="search-bar">
     <input type="text" name="search" class="search-input" id="search" @input="debounceSearch">
-    <div class="search-list-container">
-      <ul v-show="isOpen" class="search-list">
+    <div class="search-list-container" v-show="isOpen">
+      <ul  class="search-list">
         <li v-for="(city, i) in cities"
           :key="i"
           v-on:click="selectCity(city)"
@@ -69,10 +69,10 @@ export default {
   &-bar{
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
     gap:10px;
     position:relative;
+    margin:20px 0px;
   }
   &-input{
   padding: 10px;
@@ -89,6 +89,7 @@ export default {
   &-list-container{
     width: 450px;
     position: absolute;
+    z-index: 1;
     top: 100%;
     background: aliceblue;
 
