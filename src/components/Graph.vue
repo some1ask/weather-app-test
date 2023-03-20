@@ -1,6 +1,6 @@
 <template>
     <div>
-<div v-if="!propsLoaded">Загрузка...</div>
+<div v-if="!propsLoaded">Loading...</div>
 <div v-else>
   <canvas :ref="`myChart${graphId}`"></canvas>
 </div>

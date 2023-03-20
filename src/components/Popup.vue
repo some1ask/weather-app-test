@@ -1,13 +1,17 @@
+<!-- eslint-disable max-len -->
 <template>
     <div class="popup-overlay" v-if="visible">
       <div class="popup-container">
-        <button class="popup-close" @click="closePopup">close</button>
+
         <div class="popup-content">
           <p class="popup-text">{{ text }}</p>
-          <!-- <div class="popup-buttons">
+          <button class="popup-close" @click="closePopup">X</button>
+          <div v-if="isDeletePopup">
+          <div class="popup-buttons">
             <button class="popup-button popup-button--yes" @click="yesClicked">Да</button>
-            <button class="popup-button popup-button--no" @click="noClicked">Нет</button>
-          </div> -->
+            <button class="popup-button popup-button--no" @click="closePopup">Нет</button>
+          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -15,9 +19,16 @@
 
 <script>
 export default {
+  name: 'Popup',
   props: {
     text: {
       type: String,
+      default: 'Message',
+      required: true,
+    },
+    isDeletePopup: {
+      type: Boolean,
+      default: false,
       required: true,
     },
   },
@@ -28,7 +39,11 @@ export default {
   },
   methods: {
     closePopup() {
-      this.$emit('closePopup');
+      this.$emit('close');
+      this.visible = false;
+    },
+    yesClicked() {
+      this.$emit('deleteItem');
       this.visible = false;
     },
   },
@@ -58,16 +73,19 @@ export default {
 
   .popup-close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: -30px;
+    right: -3px;
     background-color: transparent;
     border: none;
     font-size: 24px;
     cursor: pointer;
+    color:black;
+
   }
 
   .popup-content {
     text-align: center;
+    position: relative;
   }
 
   .popup-text {

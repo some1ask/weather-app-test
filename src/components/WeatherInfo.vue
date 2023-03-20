@@ -1,21 +1,23 @@
+<!-- eslint-disable max-len -->
 <template>
 <div class="weather-container">
   <div class="weather-card">
-    <h2>Погода в {{ weatherData?.name }}</h2>
+    <h2>Погода в {{ item.weatherData?.name }}</h2>
     <div class="weather-info">
       <div class="weather-icon">
         <img :src="iconPath" alt="WeatherIcon">
       </div>
       <div class="weather-data">
-        <p class="weather-temperature">{{weatherData.main?.temp}}°C</p>
-        <p class="weather-description">{{weatherData.weather[0].description}}</p>
-        <p class="weather-location">Wind: {{ weatherData.wind?.speed }} m/s</p>
+        <p class="weather-temperature">{{item.weatherData.main?.temp}}°C</p>
+        <p class="weather-description">{{this.description}}</p>
+        <p class="weather-location">Wind: {{ item.weatherData.wind?.speed }} m/s</p>
       </div>
     </div>
-    <Graph :graphId="cardId" :graphInfo="graphData"/>
+    <Graph :graphId="item.id" :graphInfo="item.fiveDaysData.list"/>
     <div class="weather-controls">
-      <button class="weather-controls-delete" @click="deleteItem(cardId)">Delete</button>
-      <button class="weather-controls-favorites" @click="deleteItem(cardId)">Favorites</button>
+      <button class="weather-controls-delete" v-show="item.isFavorite" @click="isPopupOpen = true">Delete</button>
+      <Popup :isDeletePopup="true" :text="'Delete?'" @deleteItem="deleteItem(item.id)" v-if="isPopupOpen" @close="isPopupOpen = false"/>
+      <button class="weather-controls-favorites" :class="{'added':item.isFavorite}" @click="addToFavorites(item.id)">Favorites</button>
     </div>
   </div>
 </div>
@@ -23,38 +25,35 @@
 
 <script>
 import Graph from './Graph.vue';
+import Popup from './Popup.vue';
 
 export default {
   name: 'WeatherInfo',
   props: {
-    weatherData: {
+    item: {
       type: Object,
       default: () => {},
       required: true,
     },
-    graphData: {
-      type: Array,
-      default: () => [],
-      required: true,
-    },
-    cardId: {
-      type: Number,
-      default: 0,
-    },
   },
   components: {
     Graph,
+    Popup,
   },
   watch: {
-    weatherData: {
+    item: {
       immediate: false,
       deep: true,
       handler(newVal, oldVal) {
         console.log(oldVal, 'oldval');
-        if (newVal) {
-          this.iconPath = `https://openweathermap.org/img/wn/${this.weatherData.weather[0].icon}@2x.png`;
+        if (oldVal === undefined) {
+          this.iconPath = '../assets/img/missing.png';
+          this.description = '';
           console.log(this.iconPath);
         }
+        this.iconPath = `https://openweathermap.org/img/wn/${this.item.weatherData.weather[0]?.icon}@2x.png`;
+        this.description = `${this.item.weatherData.weather[0].description}`;
+        return true;
       },
     },
   },
@@ -64,14 +63,18 @@ export default {
   },
   data() {
     return {
-      isSearched: false,
-      cityInfo: null,
-      iconPath: '../assets/img/missing.png',
+      isPopupOpen: false,
+      iconPath: '',
+      description: '',
     };
   },
   methods: {
     deleteItem(id) {
+      console.log('i wanna delete', id);
       this.$emit('deleteItem', id);
+    },
+    addToFavorites(id) {
+      this.$emit('addToFavorites', id);
     },
   },
 };
@@ -166,6 +169,7 @@ export default {
       }
       &.added{
         background-color: #f1c40f;
+        pointer-events:none;
         &:hover{
           background-color: #f39c12;
         }

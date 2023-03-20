@@ -1,4 +1,4 @@
-<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
+<!-- eslint-disable  -->
 <template>
   <div id="searchBar" class="search-bar">
     <input type="text" name="search" class="search-input" id="search" @input="debounceSearch">
