@@ -4,7 +4,7 @@
     <div v-for="item in cities" :key="item.id">
       <SearchBar :cityId="item.id" @onClickedCity="searchCity" v-if="!item.isSearched"/>
 
-      <WeatherInfo v-if="item.isSearched" :cardId="item.id" :weatherData="item.weatherData" @deleteItem="deleteCard"/>
+      <WeatherInfo v-if="item.isSearched" :cardId="item.id" :graphData="item.fiveDaysData.list" :weatherData="item.weatherData" @deleteItem="deleteCard"/>
     </div>
     <div class="button-wrapper">
       <button class="button-add" @click="addCard">Add</button>
@@ -28,17 +28,9 @@ export default {
     Popup,
   },
   mounted() {
+    // this.cities.forEach((elem) => { elem.isSearched = false; });
   },
   watch: {
-    cities: {
-      handler(newVal, oldVal) {
-        if (newVal.length === 5 || oldVal.length === 5) {
-          console.log(oldVal);
-          this.isPopupOpen = true;
-        }
-      },
-    },
-    deep: true,
   },
   data() {
     return {
@@ -47,6 +39,7 @@ export default {
         id: 0,
         isSearched: false,
         weatherData: {},
+        fiveDaysData: {},
       }],
     };
   },
@@ -56,8 +49,9 @@ export default {
         this.isPopupOpen = true;
         return false;
       }
-      console.log(this.currentLength);
-      this.cities.push({ id: this.cities.length, weatherData: {}, isSearched: false });
+      this.cities.push({
+        id: this.cities.length, weatherData: {}, fiveDaysData: {}, isSearched: false,
+      });
       return true;
     },
     deleteCard(value) {
@@ -65,12 +59,15 @@ export default {
     },
     searchCity(city) {
       const [lat, lon, id] = city;
-      console.log(id);
-      fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat.toFixed(2)}&lon=${lon.toFixed(2)}&units=metric&appid=${API_KEY}`)
+      fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`)
         .then((response) => response.json())
         .then((data) => {
           this.cities[id].weatherData = data;
-          console.log(this.cities[id]);
+          return fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`);
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          this.cities[id].fiveDaysData = data;
         });
       this.cities[id].isSearched = true;
     },

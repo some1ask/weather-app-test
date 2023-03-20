@@ -12,6 +12,7 @@
         <p class="weather-location">Wind: {{ weatherData.wind?.speed }} m/s</p>
       </div>
     </div>
+    <Graph :graphId="cardId" :graphInfo="graphData"/>
     <div class="weather-controls">
       <button class="weather-controls-delete" @click="deleteItem(cardId)">Delete</button>
       <button class="weather-controls-favorites" @click="deleteItem(cardId)">Favorites</button>
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import Graph from './Graph.vue';
 
 export default {
   name: 'WeatherInfo',
@@ -28,6 +30,12 @@ export default {
     weatherData: {
       type: Object,
       default: () => {},
+      required: true,
+    },
+    graphData: {
+      type: Array,
+      default: () => [],
+      required: true,
     },
     cardId: {
       type: Number,
@@ -35,10 +43,12 @@ export default {
     },
   },
   components: {
+    Graph,
   },
   watch: {
     weatherData: {
       immediate: false,
+      deep: true,
       handler(newVal, oldVal) {
         console.log(oldVal, 'oldval');
         if (newVal) {
@@ -49,7 +59,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.weatherData);
   },
   computed: {
   },
