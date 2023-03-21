@@ -77,8 +77,8 @@ export default {
         favorites.push(favorite);
         console.log(favorites, 'fromLocal');
       } else {
-        favorites.push(favorite);
         localStorage.setItem('favorites', JSON.stringify(favorites));
+        favorites.push(favorite);
         console.log(favorites, 'pushed');
       }
     },
