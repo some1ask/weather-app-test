@@ -8,7 +8,7 @@
       <WeatherInfo v-if="item.isSearched" :item="item" @deleteItem="deleteCard" @addToFavorites="addToFavorites"/>
     </div>
     <div class="button-wrapper">
-      <button class="button-add" @click="addCard">Add</button>
+      <Button :text="'Add'" :type="'add'" @click="addCard"/>
     </div>
     <Popup :isDeletePopup="false" :text="'Please delete some element'" v-if="isPopupOpen"  @close="isPopupOpen = false"/>
   </div>
@@ -19,6 +19,7 @@
 import WeatherInfo from '../components/WeatherInfo.vue';
 import SearchBar from '../components/SearchBar.vue';
 import Popup from '../components/Popup.vue';
+import Button from '../components/Button.vue';
 import API_KEY from '../config';
 
 export default {
@@ -27,6 +28,7 @@ export default {
     WeatherInfo,
     SearchBar,
     Popup,
+    Button,
   },
   mounted() {
     // this.cities.forEach((elem) => { elem.isSearched = false; });
@@ -101,24 +103,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- .button{
-  &-add{
-    display: inline-block;
-    background-color: #2ecc71;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 
-    &:hover {
-      background-color: #27ae60;
-    }
-
-    &:active {
-      background-color: #1d8348;
-    }
-    }
- }
 </style>

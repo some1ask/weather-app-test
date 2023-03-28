@@ -139,46 +139,6 @@ export default {
     display: flex;
     margin-top:20px;
     justify-content: space-between;
-    &-delete{
-      display: inline-block;
-      background-color: #e74c3c;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      &:hover{
-        background-color: #c0392b;
-      }
-      &:active{
-        background-color: #d35400;
-      }
-    }
-    &-favorites{
-      display: inline-block;
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      &:hover{
-        background-color: #2980b9;
-      }
-      &.added{
-        background-color: #f1c40f;
-        pointer-events:none;
-        &:hover{
-          background-color: #f39c12;
-        }
-        &.active{
-          background-color: #e67e22;
-        }
-      }
     }
   }
-}
-
 </style>
