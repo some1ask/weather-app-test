@@ -17,13 +17,15 @@ export default {
       handler(newVal, oldVal) {
         if (oldVal !== newVal) {
           this.parseDate();
-          this.propsLoaded = true;
 
           if (this.chart !== null) {
+            this.chart.data.labels = this.days.map((row) => `${new Date(row.dt * 1000).getUTCHours()}:00`);
+            this.chart.data.datasets[0].data = this.days.map((row) => row.main.temp);
             this.chart.update();
-            this.createGraph(this.days);
           } else {
-            this.createGraph(this.days);
+            this.propsLoaded = true;
+
+            // this.createGraph(this.days);
           }
         }
       },
@@ -38,10 +40,10 @@ export default {
       this.chart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: arr.map((row) => `${new Date(row.dt * 1000).getUTCHours()}:00`),
+          labels: arr.length > 0 ? arr.map((row) => `${new Date(row.dt * 1000).getUTCHours()}:00`) : '',
           datasets: [{
             label: 'Temperature',
-            data: arr.map((row) => row.main.temp),
+            data: arr.length > 0 ? arr.map((row) => row.main.temp) : '',
             borderColor: 'rgb(255,108, 0)',
             backgroundColor: 'rgb(255,108, 0)',
           }],
@@ -62,6 +64,7 @@ export default {
     },
   },
   mounted() {
+    this.createGraph(this.days);
   },
   props: {
     graphId: {
