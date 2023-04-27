@@ -15,9 +15,9 @@
     </div>
     <Graph :graphId="item.id" :graphInfo="item.fiveDaysData.list"/>
     <div class="weather-controls">
-      <button class="weather-controls-delete" v-show="item.isFavorite" @click="isPopupOpen = true">Delete</button>
+      <Button :type="'delete'" :text="'Delete'" v-show="item.isFavorite" @click="isPopupOpen = true"/>
       <Popup :isDeletePopup="true" :text="'Delete?'" @deleteItem="deleteItem(item.id)" v-if="isPopupOpen" @close="isPopupOpen = false"/>
-      <button class="weather-controls-favorites" :class="{'added':item.isFavorite}" @click="addToFavorites(item.id)">Favorites</button>
+      <Button :type="'favorites'" :text="'Favorites'" :class="{'added':item.isFavorite}" @click="addToFavorites(item.id)"/>
     </div>
   </div>
 </div>
@@ -26,6 +26,7 @@
 <script>
 import Graph from './Graph.vue';
 import Popup from './Popup.vue';
+import Button from './Button.vue';
 
 export default {
   name: 'WeatherInfo',
@@ -39,6 +40,7 @@ export default {
   components: {
     Graph,
     Popup,
+    Button,
   },
   watch: {
     item: {

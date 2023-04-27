@@ -2,15 +2,17 @@
 <!-- eslint-disable max-len -->
 <template>
   <div>
+    <div class="wrapper">
     <div v-for="item in cities" :key="item.id">
       <SearchBar :cityId="item.id" @onClickedCity="searchCity" v-if="!item.isSearched"/>
 
-      <WeatherInfo v-if="item.isSearched" :item="item" @deleteItem="deleteCard" @addToFavorites="addToFavorites"/>
+      <WeatherInfo v-if="item.isSearched" :item="item" @deleteItem="deleteCard" @addToFavorites="addToFavorites" />
     </div>
+    </div>
+    <Popup :isDeletePopup="false" :text="'Please delete some element'" v-if="isPopupOpen"  @close="isPopupOpen = false"/>
     <div class="button-wrapper">
       <Button :text="'Add'" :type="'add'" @click="addCard"/>
     </div>
-    <Popup :isDeletePopup="false" :text="'Please delete some element'" v-if="isPopupOpen"  @close="isPopupOpen = false"/>
   </div>
 
 </template>
@@ -60,29 +62,23 @@ export default {
       return true;
     },
     deleteCard(value) {
-      // let favorites = [];
       this.cities = this.cities.filter((item) => item.id !== value);
-      // if (localStorage.getItem('favorites')) {
-      //   favorites = JSON.parse(localStorage.getItem('favorites'));
-      //   favorites = [...this.cities];
-      //   localStorage.setItem('favorites', JSON.stringify(favorites));
-      // }
     },
     addToFavorites(value) {
       let favorites = [];
       const favorite = this.cities.find((elem) => elem.id === value);
       console.log(favorite, 'favorite');
       favorite.isFavorite = true;
-      console.log(localStorage.getItem('favorites'));
-      if (localStorage.getItem('favorites') !== null) {
-        favorites = JSON.parse(localStorage.getItem('favorites'));
-        favorites.push(favorite);
-        console.log(favorites, 'fromLocal');
-      } else {
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        favorites.push(favorite);
-        console.log(favorites, 'pushed');
-      }
+      // console.log(localStorage.getItem('favorites'));
+      // if (localStorage.getItem('favorites') !== null) {
+      //   favorites = JSON.parse(localStorage.getItem('favorites'));
+      //   favorites.push(favorite);
+      //   console.log(favorites, 'fromLocal');
+      // } else {
+      //   localStorage.setItem('favorites', JSON.stringify(favorites));
+      //   favorites.push(favorite);
+      //   console.log(favorites, 'pushed');
+      // }
     },
     searchCity(city) {
       const [lat, lon, id] = city;
@@ -103,5 +99,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+  .button-wrapper{
+        width: 33%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .wrapper{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 </style>

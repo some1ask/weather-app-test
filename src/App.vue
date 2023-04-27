@@ -22,7 +22,12 @@ export default {
   text-align: left;
   color: #2c3e50;
 }
+body{
+  background: url('./assets/img/bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
 
+}
 nav {
   padding: 30px;
 

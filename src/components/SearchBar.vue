@@ -1,5 +1,6 @@
 <!-- eslint-disable  -->
 <template>
+<div class="search-bar-wrapper">
   <div id="searchBar" class="search-bar">
     <input type="text" name="search" class="search-input" id="search" @input="debounceSearch">
     <div class="search-list-container" v-show="isOpen">
@@ -12,6 +13,7 @@
     {{ city.name }}, {{ city.country }} <span v-if="city.state">, {{ city.state }}</span>
         </li>
       </ul>
+  </div>
   </div>
   </div>
 </template>
@@ -73,6 +75,9 @@ export default {
     gap:10px;
     position:relative;
     margin:20px 0px;
+    &-wrapper{
+      margin: 0 auto;
+    }
   }
   &-input{
   padding: 10px;
